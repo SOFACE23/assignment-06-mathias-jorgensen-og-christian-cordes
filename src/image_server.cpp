@@ -16,14 +16,17 @@
 
 using boost::asio::ip::tcp;
 
+// makes the function read a file names 'filename'
 std::vector<uint8_t> get_image(const char* filename)
 {
-    std::ifstream file(filename, std::ios::binary);
+    std::ifstream file(filename, std::ios::binary); // Opens the file, in the raw binary form.
 
+    // Finds the size of the file
     file.seekg(0, std::ios::end);
     std::streampos fileSize = file.tellg();
     file.seekg(0, std::ios::beg);
 
+    // Reads datafrom the file tinto Byte-vector filedata, to be returned.
     std::vector<uint8_t> fileData(fileSize);
     file.read((char*) &fileData[0], fileSize);
     return fileData;
@@ -39,11 +42,12 @@ int main()
 
     while (true)
     {
-      std::cout << "RUNNING" << std::endl;
       tcp::socket socket(io_context);
       acceptor.accept(socket);
-  
+
+      // loads the image 'cat.jpg'
       auto message = get_image("cat.jpg");
+
       boost::system::error_code ignored_error;
       boost::asio::write(socket, boost::asio::buffer(message), ignored_error);
     }
