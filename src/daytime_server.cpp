@@ -26,17 +26,23 @@ int main()
 {
   try
   {
+    // create a io_context, makes transfer of data possible
     boost::asio::io_context io_context;
 
+    // Creates an acceptor, which can accept requests 
     tcp::acceptor acceptor(io_context, tcp::endpoint(tcp::v4(), 13));
 
     while (true)
     {
+      // Creates a socket which can read an write data.
+      // And makes them accept requests
       tcp::socket socket(io_context);
       acceptor.accept(socket);
 
+      // makes the message ready
       std::string message = make_daytime_string();
 
+      // If there is a request to read from the server, the message is written to the buffer, and returned to the client.
       boost::system::error_code ignored_error;
       boost::asio::write(socket, boost::asio::buffer(message), ignored_error);
     }
