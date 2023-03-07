@@ -17,10 +17,12 @@
 
 using boost::asio::ip::tcp;
 
-constexpr size_t image_size = 25000;
+// Set the image size to the size of "cat.jpg"
+constexpr size_t image_size = 17618;
 
 void save_image(char* data, size_t len)
 {
+  // Creates a new file and writes to it
   std::ofstream file("copycat.jpg", std::ios::binary);
   file.write(data, len);
 }
